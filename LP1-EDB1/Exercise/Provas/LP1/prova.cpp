@@ -46,9 +46,10 @@ namespace prova
         byte *f = static_cast<byte*> (const_cast<void*> (first));
         byte *l = static_cast<byte*> (const_cast<void*> (last));
         const byte *valor = static_cast<const byte*> (value);
-        
+        int tamanho;
         while(f != l) {
-            byte *aux = f+(std::distance(f,l)/2);
+            tamanho = std::distance(f, l)/size;
+            byte *aux = f+(tamanho/2)*size;
             if((cmp(aux, valor) != -1) && (cmp(aux-size, valor)) == -1) {
                 return aux;
             }
@@ -73,30 +74,22 @@ namespace prova
         byte *f = static_cast<byte*> (const_cast<void*> (first));
         byte *l = static_cast<byte*> (const_cast<void*> (last));
         const byte *valor = static_cast<const byte*> (value);
-        byte *aux = f + std::distance(f,l)/2;
-        /* Q2-e:
-        int A[] = { 1, 1, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6 };
-        indice 10, A[10]=5.
-        auto target(4);
-        */
+        auto tamanho = std::distance(f, l)/size;
+        byte *aux = f+(tamanho/2)*size;
 
         while(f <= aux && aux < l ) {
+            std::cout << cmp(aux, valor) << "and " << cmp(aux-size, valor) << "\n";
             if((cmp(aux, valor) == 1) && (cmp(aux-size, valor)) != 1) {
-                std::cout << *aux << std::endl;
-                std::cout << "PRIMEIRO IF\n";
                 return aux;
             }
-            else if((cmp(aux, valor) == 1) && (cmp(aux-size, valor) == 1)) {
-                //int *v = static_cast<int *> (aux);
-                //std::cout << *v << std::endl;
-                std::cout << "SEGUNDO IF\n";
+            else if(cmp(aux, valor) == 1 && cmp(aux-size, valor) == 1) {
                 l=aux;
             }
             else {
-                std::cout << "NENHUM IF\n";
                 f=aux+size;
             }
-            aux = f+(std::distance(f,l)/2);
+            tamanho = std::distance(f, l)/size;
+            aux = f+(tamanho/2)*size;
         }
         if((f == l) && (cmp(f, valor)) == 1) {
             return f;
@@ -158,7 +151,6 @@ int compare_ints( const void * a, const void * b )
 {
     const int *aa = static_cast<const int*> (a);
     const int *bb = static_cast<const int*> (b);
-    std::cout << *aa << "     " << *bb << "\n";
     if(*aa < *bb) {
         return -1;
     }
@@ -317,7 +309,7 @@ int main( )
 
 
     {
-        std::cout << ">>> Q2-e: testando a funcao limite_superior(): valor presente, limite inferior no meio do vetor.\n";
+        std::cout << ">>> Q2-e: testando a funcao limite_superior(): valor presente, limite inferior no meio do vetror.\n";
 
         int A[] = { 1, 1, 2, 3, 3, 3, 3, 4, 4, 4, 5, 5, 6 };
         auto target(4);
@@ -325,7 +317,6 @@ int main( )
         // buscando o limite inferior
         auto li = (int *) prova::limite_superior( std::begin(A), std::end(A), sizeof(int),
                 &target, compare_ints );
-        std::cout << *li << "\n";
         if ( *li == 5 and std::distance(std::begin(A), li) == 10 )
         {
             std::cout << "    Sua resposta estah correta!\n";
