@@ -29,15 +29,15 @@ namespace prova
         byte *l = static_cast<byte*> (const_cast<void*>(last));
         while(p(f)) {
             f+= size;
-        }
+		}
         for(auto i(f); i != l; i++ ) {
             if(p(i)) {
                 return false;
             }
         }
-
         return true; // stub, substituir por seu código
-    }
+	}
+	
 
     // Questão 2-a
     const void * limite_inferior( const void *first, const void *last,
@@ -102,8 +102,28 @@ namespace prova
     void * remove( const void *first, const void *last, const void *first_r,
                const void *last_r, size_t size )
     {
-        // TODO: seu código vai aqui
-        return (void*) last;  // stub, substituir por seu código
+		byte *f = static_cast<byte*> (const_cast<void*> (first));
+		byte *l = static_cast<byte*> (const_cast<void*> (last));
+
+		byte *f1 = static_cast<byte*> (const_cast<void*> (first_r));
+		byte *l1 = static_cast<byte*> (const_cast<void*> (last_r)); 
+		auto minus = (l1-f1);
+		for(auto i(f1); i < l1; i += size) {
+			std::cout << ">>> Inicialmente: " << (int) *i << "\n";
+
+			if(l1 >= l) break;
+			std::swap(*i, *l1);
+			l1 += size;
+			std::cout << ">>> Posteriormente: " << (int) *i << "\n";
+
+		}
+		std::cout << (int) minus << "  \n";
+		l -= minus;
+		for(auto j(f); j<l; j += size) {
+			std::cout <<(int) *j << "   \n";
+		}
+
+        return (void*) l;  // stub, substituir por seu código
     }
 
     // Questão 4
@@ -422,7 +442,54 @@ int main( )
 
     // ================================================================================
     // TODO: Inclua aqui seus testes para as questões 3, 4 e 5.
-    // ================================================================================
+    // ================================================================================#HERE
+	int score3 = 0;
+	{
+		std::cout << ">>> Questao 3-a: testando a funcao remove().\n";
+
+		int A[] = {1,2,3,4,5,6,7,8,9,10};
+		
+		//removendo elementos desejados
+		auto result = (int *) prova::remove(std::begin(A), std::end(A), std::begin(A)+2, std::begin(A)+5, sizeof(int));
+		auto tam = std::distance(std::begin(A), result);
+		std::cout << *(std::begin(A)+tam-1) << "    " << tam << "\n";
+		if(*(std::begin(A)+tam-1) == 10 and tam == 7) {
+			std::cout << "		Sua resposta estah correta!\n";
+			score3 += 5;
+		}
+		else {
+			std::cout << "		Sua respota estah incorreta!\n";
+		}
+	}
+	std::cout << ">>> Seus pontos: " << score3 << " (de " << total << " 0.\n\n";
+			
+	{
+        std::cout << ">>> Questao 3-b: testando a funcao remove().\n";
+
+        int A[] = {1,2,3,4,5,6,7,8,9,10};
+
+        //removendo elementos desejados
+        auto result = (int *) prova::remove(std::begin(A), std::end(A), std::begin(A)+3, std::begin(A)+8, sizeof(int));
+		auto tam = std::distance(std::begin(A), result);
+
+		std::cout << *(std::begin(A)+tam-1) << "    " << tam << "\n";
+
+        if(*(std::begin(A)+tam-1) == 10 and tam == 5) {
+            std::cout << "      Sua resposta estah correta!\n";
+            score3 += 5;
+        }
+        else {
+            std::cout << "      Sua respota estah incorreta!\n";
+        }
+    }
+    std::cout << ">>> Seus pontos: " << score3 << " (de " << total << " 0.\n\n";
+
+
+
+
+
+
+
 
 
 
