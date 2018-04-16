@@ -4,28 +4,29 @@
 
 using byte = unsigned char;
 using Compare = bool(const void*, const void*, size_t);
-
+/*
+	NOT NECESSARY
 bool comp(const void *a, const void *b, size_t size) {
 	byte *aa = static_cast<byte*> (const_cast<void*> (a));
 	byte *bb = static_cast<byte*> (const_cast<void*> (b));
 
 	return *aa < *bb;
 }
-	
+*/	
 
-void selection_sort(const void *first, const void *last, size_t size, Compare comp) {
+void selection_sort(const void *first, const void *last, size_t size) {
 	byte *f = static_cast<byte*> (const_cast<void*> (first));
 	byte *l = static_cast<byte*> (const_cast<void*> (last));
 	byte *min;
 
-	//std::cout << (float) *f << "\n";	
+//	std::cout << (float) *f << "\n";	
 
 	while(f <= (l-size)) {
 		//First value is already considerated the lowest.
 		min = f;
 		for(auto i(f+size); i < l; i += size) {
 			//Checks if the object we are looking is lower than the considerated to be the lowest
-			if(comp(i, min, size)) {
+			if(memcmp(i, min, size) < 0) {
 				//Changes 'min' to new found lowest
 				min = i;
 			}
@@ -35,26 +36,26 @@ void selection_sort(const void *first, const void *last, size_t size, Compare co
 		//Increments sorted part.
 		f += size;
 	}
-}  
+}
+  
 	
 
 int main() {
 
-/*Buçanha sai certo*/
-	int A[] = {8,2,3,6,0,5,1,9,4,7};
-/*Buçanha bugada*/
-	float A[] = {1.22, 1.3, 1.5, 1.1, 1.4, 1.7, 1.2, 1.8, 1.6, 1.0};
-/*Buçanha sai certo*/
-	char A[] = {'g','h','i','f','a','b','j','c','d','e'};
-/*Buçanha bugada*/
+/*OK*/
+//	int A[] = {8,2,3,6,0,5,1,9,4,7};
+/*NOT OKAY ;-;*/
+//	double A[] = {1.22, 1.3, 1.5, 1.1, 1.4, 1.7, 1.2, 1.8, 1.6, 1.0};
+/*OK!*/
+//	char A[] = {'g','h','i','f','a','b','j','c','d','e'};
+/*NOT OKAY ;-;*/
 	std::string A[] = {"um","tres","cinco","sete","nove"};
 
-	byte *algo = (byte*) std::begin(A);
-	//std::cout << (float) *(algo) << "\n";
-
+	
+/* Not a important part 
 	auto size_A = sizeof(A)/sizeof(A[3]); //Getting type size
 	std::cout << size_A << "\n";	
-
+*/
 
 	//Printing Original Array
 	std::cout << ">>> Original Array:\n [ ";
@@ -62,9 +63,9 @@ int main() {
 		std::cout << e << " ";
 	}
 	std::cout << "]\n";
-	std::cout << sizeof(A[2]) << "\n";
+	//std::cout << sizeof(A[2]) << "\n";
 
-	selection_sort(std::begin(A), std::end(A), sizeof(A[0]), comp);
+	selection_sort(std::begin(A), std::end(A), sizeof(A[0]));
 
 
 	//Printing "sorted" Array
