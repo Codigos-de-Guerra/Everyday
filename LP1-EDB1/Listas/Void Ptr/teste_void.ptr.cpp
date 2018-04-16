@@ -17,7 +17,7 @@ bool comp(const void *a, const void *b, size_t size) {
 void selection_sort(const void *first, const void *last, size_t size) {
 	byte *f = static_cast<byte*> (const_cast<void*> (first));
 	byte *l = static_cast<byte*> (const_cast<void*> (last));
-	byte *min;
+	byte *min = new byte[size];
 
 //	std::cout << (float) *f << "\n";	
 
@@ -26,13 +26,24 @@ void selection_sort(const void *first, const void *last, size_t size) {
 		min = f;
 		for(auto i(f+size); i < l; i += size) {
 			//Checks if the object we are looking is lower than the considerated to be the lowest
-			if(memcmp(i, min, size) < 0) {
+			if(std::memcmp(i, min, size) < 0) {
 				//Changes 'min' to new found lowest
+				//std::memcpy(min, i, size); //memcpy is for values, but i am using it for the pointer reference. Therefore [min = i].
 				min = i;
 			}
 		}
 		//Swaps values if it is lowest.
-		std::swap(*f, *min);
+
+		/*Creates a temporaly pointer to save some of my reusable data*/
+		byte *temp = new byte[size];
+
+		std::memcpy(temp, f, size);
+		std::memcpy(f, min, size);
+		std::memcpy(min, temp, size);
+
+		/*Desallocates its memory space*/
+		delete [] temp;
+		
 		//Increments sorted part.
 		f += size;
 	}
@@ -43,13 +54,14 @@ void selection_sort(const void *first, const void *last, size_t size) {
 int main() {
 
 /*OK*/
-//	int A[] = {8,2,3,6,0,5,1,9,4,7};
+	int I[] = {8,2,3,6,0,5,1,9,4,7};
+
 /*NOT OKAY ;-;*/
-//	double A[] = {1.22, 1.3, 1.5, 1.1, 1.4, 1.7, 1.2, 1.8, 1.6, 1.0};
+	double D[] = {1.22, 1.3, 1.5, 1.1, 1.4, 1.7, 1.2, 1.8, 2.1, 1.6, 1.0};
 /*OK!*/
-//	char A[] = {'g','h','i','f','a','b','j','c','d','e'};
+	char C[] = {'g','h','i','f','a','b','j','c','d','e'};
 /*NOT OKAY ;-;*/
-	std::string A[] = {"um","tres","cinco","sete","nove"};
+	std::string S[] = {"um","sete","cinco","nove","tres"};
 
 	
 /* Not a important part 
@@ -58,22 +70,72 @@ int main() {
 */
 
 	//Printing Original Array
-	std::cout << ">>> Original Array:\n [ ";
-	for(auto& e : A) {
+	std::cout << ">>> Original Int Array:\n [ ";
+	for(auto& e : I) {
 		std::cout << e << " ";
 	}
 	std::cout << "]\n";
-	//std::cout << sizeof(A[2]) << "\n";
 
-	selection_sort(std::begin(A), std::end(A), sizeof(A[0]));
+	selection_sort(std::begin(I), std::end(I), sizeof(I[0]));
 
 
 	//Printing "sorted" Array
-	std::cout << ">>> Sorted Array:\n [ ";
-	for(auto& i : A) {
+	std::cout << ">>> Sorted Int Array:\n [ ";
+	for(auto& i : I) {
 		std::cout << i << " ";
 	}
+	std::cout << "]\n\n\n";
+
+	//Printing Original Array
+	std::cout << ">>> Original Double Array:\n [ ";
+	for(auto& e : D) {
+		std::cout << e << " ";
+	}
 	std::cout << "]\n";
+
+	selection_sort(std::begin(D), std::end(D), sizeof(D[0]));
+
+
+	//Printing "sorted" Array
+	std::cout << ">>> Sorted Double Array:\n [ ";
+	for(auto& i : D) {
+		std::cout << i << " ";
+	}
+	std::cout << "]\n\n\n";
+
+	//Printing Original Array
+	std::cout << ">>> Original Char Array:\n [ ";
+	for(auto& e : C) {
+		std::cout << e << " ";
+	}
+	std::cout << "]\n";
+
+	selection_sort(std::begin(C), std::end(C), sizeof(C[0]));
+
+
+	//Printing "sorted" Array
+	std::cout << ">>> Sorted Char Array:\n [ ";
+	for(auto& i : C) {
+		std::cout << i << " ";
+	}
+	std::cout << "]\n\n\n";
+
+	//Printing Original Array
+	std::cout << ">>> Original String Array:\n [ ";
+	for(auto& e : S) {
+		std::cout << e << " ";
+	}
+	std::cout << "]\n";
+
+	selection_sort(std::begin(S), std::end(S), sizeof(S[0]));
+
+
+	//Printing "sorted" Array
+	std::cout << ">>> Sorted String Array:\n [ ";
+	for(auto& i : S) {
+		std::cout << i << " ";
+	}
+	std::cout << "]\n\n\n";
 
 	return 0;
 }	

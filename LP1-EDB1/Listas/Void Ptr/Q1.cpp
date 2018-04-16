@@ -23,10 +23,10 @@ void reverse(void *first, void *last, size_t size) {
 	}
 }
 
-void * lsearch( const void *first, const void *last, const void value, size_t size ) {
+void * lsearch( const void *first, const void *last, const void *value, size_t size ) {
 	byte *f = (byte*) first;
 	byte *l = (byte*) last;
-	byte v = (byte) value;
+	byte *v = (byte*) value;
 //	memcpy(v, value, size);
 
 	//auto tam = std::distance(f, l)/size; Needed for another search
@@ -38,13 +38,13 @@ void * lsearch( const void *first, const void *last, const void value, size_t si
 		f += size;
 	}
 
-	return last;
+	return l;
 }	
 
 
 int main() {
-//	int A[] = {2,3,4,5,6,10,1};
-	char A[] = {'r', 't', 'a', 'q', 'l'};
+	int A[] = {2,3,4,5,6,10,1};
+//	char A[] = {'r', 't', 'a', 'q', 'l'};
 //	double A[] = { 1.5, 3.75, 2.25, 9.62};
 //	std::string A[] = {"um", "dois", "tres", "quatro", "cinco"};
 	std::cout << ">>> Before reverse:\n[ ";
@@ -61,11 +61,17 @@ int main() {
 	}
 	std::cout << "]\n";
 /*-----------------------------------------------------------*/
-	auto result =(int *) clone(std::begin(A)+1, std::begin(A)+4, sizeof(A[0]));
+	auto element_to_look = std::begin(A)+2;
+	auto result =(int *) lsearch(std::begin(A), std::end(A), element_to_look, sizeof(A[0]));
 	
-	std::cout << ">>> Cloned Array:\n[ ";
-	std::cout << *result << "\n";
+	if( result != std::end(A)) {
+		std::cout << ">>> Value found at position: " << std::distance(std::begin(A), result) << ". Key = " << *result << "\n";
+	}
+	else {
+		std::cout << ">>> Not found. Key = " << *result << "\n";
+	}
+	
 
-	return 0;
+		return 0;
 }
 	
