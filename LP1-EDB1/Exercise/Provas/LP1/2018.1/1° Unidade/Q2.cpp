@@ -13,22 +13,15 @@ std::pair<int *, int *> array_selected(const int *first, const int *last, UnaryP
 	
 	int *a_first = const_cast<int*> (first);
 	int *a_last = const_cast<int*> (last);
-
-	for(auto i(first); i != last; i++) {
-		if(p(i)) {
-			a_first = (int*) i;
-			break;
-		}
-	}
-
+	
 	for(auto i(first); i != last; i++) {
 		if(p(i)) {
 			count++;
 		}
 	}
-	a_last = (int*) last-count;
-
+	
 	int *a = new int [count];
+	a_first = a;
 
 	for(auto i(first); i != last; i++) {
 		if(p(i)) {
@@ -36,6 +29,7 @@ std::pair<int *, int *> array_selected(const int *first, const int *last, UnaryP
 			a++;
 		}
 	}
+	a_last = a;
 
 	return std::make_pair(a_first, a_last);
 }
@@ -56,6 +50,3 @@ int main() {
 
 	return 0;
 }
-
-
-	
