@@ -9,35 +9,36 @@ int Gasoline(std::vector<int> &alturas) {
 	int aux = 0;
 	int min_aux = 0;
 	int min_aux2 = 0;
+	int minor = 0;
+	int minor2 = 0;
 	
 	for(auto it = alturas.begin(); it != alturas.end(); it++) {
 		aux = *it - *(it+1);
 		min_aux += aux;
 		min_aux = fmin(min_aux, 0);
+		if(minor > min_aux) {
+			minor = min_aux;
+		}
 	}
+	
 	for(auto it = alturas.end() - 1; it >= alturas.begin(); it--) {
 		aux = *it - *(it-1);
 		min_aux2 += aux;
 		min_aux2 = fmin(min_aux2, 0);
+		if(minor2 > min_aux2) {
+			minor2 = min_aux2;
+		}
 	}
 	
-	gas = fmin(min_aux, min_aux2);
+	gas = fmin(minor, minor2);
 	
-	return std::abs(gas);
-}
-
-void write(std::vector<int> &v) {
-	std::cout << "[ ";
-	for(auto it(v.begin()); it != v.end(); it++) {
-		std::cout << *it << " ";
-	}
-	std::cout << "]\n";
+	return std::abs (gas);
 }
 
 
 int main(int argc, char const **argv) {
 	if(argc != 2) {
-		cerr << "Command line input is not enough\n";
+		std::cerr << "Command line input is not enough\n";
 		return -1;
 	}
 	std::istringstream filestream(argv[1]);	// Command line argument as string.
@@ -50,6 +51,9 @@ int main(int argc, char const **argv) {
 	std::string line;	//Variable to help me know the amount of lines
 	std::vector<int> heights;
 
+	std::ofstream ofs;
+	ofs.open("saida.txt");
+
 	
 	while(ifs.good()) {
 		std::getline(ifs, line);
@@ -59,17 +63,22 @@ int main(int argc, char const **argv) {
 			ss >> num;
 			heights.push_back(num);
 		}
-		/*
-		if( heights.size() == 1) {
-			std::cout << 0 << "\n";
+		
+		if( heights.size() != 1) {
+			int result = Gasoline(heights);
+			std::cout << result << "\n";
+			ofs << result << "\n";
 		}
-		*/
-			
-		write(heights);
+		else {
+			std::cout << 0 << "\n";
+			ofs << 0 << "\n";
+		}
 
 		heights.erase( heights.begin(), heights.end() );
 	}
+	
+	ifs.close();
+	ofs.close();
 
-
+	return 0;
 }
-
