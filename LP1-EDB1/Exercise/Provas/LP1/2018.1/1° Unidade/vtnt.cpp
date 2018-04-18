@@ -8,12 +8,22 @@ int Gasoline(std::vector<int> &alturas) {
 	int gas = 0;
 	int aux = 0;
 	int min_aux = 0;
+	int min_aux2 = 0;
+	
 	for(auto it = alturas.begin(); it != alturas.end(); it++) {
 		aux = *it - *(it+1);
-		if(min_aux > fmin(aux, 0)) {
-			min_aux = fmin(aux, 0);
-		}
+		min_aux += aux;
+		min_aux = fmin(min_aux, 0);
 	}
+	for(auto it = alturas.end() - 1; it >= alturas.begin(); it--) {
+		aux = *it - *(it-1);
+		min_aux2 += aux;
+		min_aux2 = fmin(min_aux2, 0);
+	}
+	
+	gas = fmin(min_aux, min_aux2);
+	
+	return std::abs(gas);
 }
 
 void write(std::vector<int> &v) {
@@ -49,10 +59,11 @@ int main(int argc, char const **argv) {
 			ss >> num;
 			heights.push_back(num);
 		}
+		/*
 		if( heights.size() == 1) {
 			std::cout << 0 << "\n";
 		}
-		else {
+		*/
 			
 		write(heights);
 
